@@ -65,9 +65,7 @@ def createNewPlaylist(base, playlist):
     print('New playlist written to: {}'.format(playlist))
 
 
-def main():
-    base = sys.argv[1]
-
+def processFolder(base):
     playlist, modify = findPlaylist(base)
 
     if playlist and modify:
@@ -77,5 +75,20 @@ def main():
         print('Creating playlist from folder: {}'.format(base))
         createNewPlaylist(base, playlist)
 
+
+def main():
+    base = sys.argv[1]
+
+    for path, dirs, files in os.walk(base):
+        for dir in dirs:
+            absolute = os.path.abspath(os.path.join(path, dir))
+            print('Processing {}'.format(absolute))
+            # this will recurse inside
+            processFolder(absolute)
+            print()
+
+        # we only look at the immediate children
+        # they will be recursing inside
+        break
 
 main()
