@@ -50,7 +50,7 @@ def modifyPlaylist(base, playlist):
 def createNewPlaylist(base, playlist):
     if playlist == None:
         name = os.path.basename(os.path.normpath(base))
-        playlist = os.path.join(path, name + M3U)
+        playlist = os.path.join(base, name + M3U)
 
     with open(playlist, 'w', encoding = ENCODING) as pl:
         for path, dirs, files in os.walk(base):
