@@ -23,7 +23,7 @@ def findPlaylist(base):
         if ext == M3U:
             absolute = os.path.join(base, file)
             with open(absolute, 'r', encoding = ENCODING) as pl:
-                line = pl.readline()
+                line = pl.readline().strip()
                 if line and line.startswith('#EXTM3U'):
                     return absolute, True
             return absolute, False
@@ -39,9 +39,12 @@ def modifyPlaylist(base, playlist):
     # now we read the backup and recreate the playlist
     with open(backup, 'r', encoding = ENCODING) as plIn, open(playlist, 'w', encoding = ENCODING) as plOut:
         for line in plIn:
-            if line and (not line.startswith('#')):
-                relative = normalise(base, line)
-                plOut.write(relative)
+            if line:
+                sline = line.strip() # this will remove \n at the end
+                if not sline.startswith('#'):
+                    relative = normalise(base, sline)
+                    plOut.write(relative)
+                    plOut.write('\n')
 
     print('New playlist written to: {}'.format(playlist))
     print('Old playlist backup in: {}'.format(backup))
