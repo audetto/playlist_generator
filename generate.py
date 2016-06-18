@@ -103,8 +103,7 @@ def main():
                 print('Processing {}'.format(absolute))
                 # this will recurse inside
                 processFolder(absolute)
-                print()
-
+            print()
 
         # we only look at the immediate children
         # they will be recursing inside
