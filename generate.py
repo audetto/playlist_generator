@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import traceback
 
 
 VALID = ['.mp3', '.ogg', '.m4a']
@@ -79,14 +80,16 @@ def createNewPlaylist(base, playlist):
 
 
 def processFolder(base):
-    playlist, modify = findPlaylist(base)
+    try:
+        playlist, modify = findPlaylist(base)
 
-    if playlist and modify:
-        print('Found existing playlist to modify: {}'.format(playlist))
-        modifyPlaylist(base, playlist)
-    else:
-        print('Creating playlist from folder: {}'.format(base))
-        createNewPlaylist(base, playlist)
+        if playlist and modify:
+            print('Found existing playlist to modify: {}'.format(playlist))
+            modifyPlaylist(base, playlist)
+        else:
+            createNewPlaylist(base, playlist)
+    except (PermissionError, UnicodeDecodeError, UnicodeEncodeError):
+        traceback.print_exc()
 
 
 def main():
