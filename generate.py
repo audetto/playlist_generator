@@ -5,8 +5,7 @@ import traceback
 
 
 VALID = ['.mp3', '.ogg', '.m4a']
-INPUT_ENCODING = 'latin-1'
-OUTPUT_ENCODING = 'utf-8'
+ENCODING = 'utf-8'
 M3U = '.m3u'
 BAK = '.bak'
 
@@ -33,7 +32,7 @@ def findPlaylist(base):
         name, ext = os.path.splitext(file)
         if ext == M3U:
             absolute = os.path.join(base, file)
-            with open(absolute, 'r', encoding = INPUT_ENCODING) as pl:
+            with open(absolute, 'r', encoding = ENCODING, errors = 'replace') as pl:
                 line = pl.readline().strip()
                 if line and line.startswith('#EXTM3U'):
                     return absolute, True
@@ -48,7 +47,7 @@ def modifyPlaylist(base, playlist):
     shutil.copy(playlist, backup)
 
     # now we read the backup and recreate the playlist
-    with open(backup, 'r', encoding = INPUT_ENCODING) as plIn, open(playlist, 'w', encoding = OUTPUT_ENCODING) as plOut:
+    with open(backup, 'r', encoding = ENCODING, errors = 'replace') as plIn, open(playlist, 'w', encoding = ENCODING) as plOut:
         for line in plIn:
             if line:
                 sline = line.strip() # this will remove \n at the end
@@ -66,7 +65,7 @@ def createNewPlaylist(base, playlist):
         name = os.path.basename(os.path.normpath(base))
         playlist = os.path.join(base, name + M3U)
 
-    with open(playlist, 'w', encoding = OUTPUT_ENCODING) as pl:
+    with open(playlist, 'w', encoding = ENCODING) as pl:
         for path, dirs, files in os.walk(base):
             for f in files:
                 name, ext = os.path.splitext(f)
