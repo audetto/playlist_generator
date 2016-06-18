@@ -9,6 +9,15 @@ OUTPUT_ENCODING = 'utf-8'
 M3U = '.m3u'
 BAK = '.bak'
 
+SKIP_FOLDERS = ['SCS.4DJ_', 'RECYCLE.BIN']
+
+
+def skipFolder(name):
+    for s in SKIP_FOLDERS:
+        if s in name:
+            return True  # SKIP
+    return False # ACCEPT
+
 
 def normalise(base, absolute):
     relative = os.path.relpath(absolute, base)
@@ -86,10 +95,14 @@ def main():
     for path, dirs, files in os.walk(base):
         for dir in dirs:
             absolute = os.path.abspath(os.path.join(path, dir))
-            print('Processing {}'.format(absolute))
-            # this will recurse inside
-            processFolder(absolute)
-            print()
+            if skipFolder(dir):
+                print('Skipping {}'.format(absolute))
+            else:
+                print('Processing {}'.format(absolute))
+                # this will recurse inside
+                processFolder(absolute)
+                print()
+
 
         # we only look at the immediate children
         # they will be recursing inside
