@@ -7,7 +7,7 @@ VALID = ['.mp3', '.ogg', '.m4a']
 ENCODING = 'utf-8'
 M3U = '.m3u'
 
-SKIP_FOLDERS = ['SCS.4DJ_', 'RECYCLE.BIN']
+SKIP_FOLDERS = ['SCS.4DJ_', 'RECYCLE.BIN', 'System Volume Information']
 
 
 def skipFolder(name):
